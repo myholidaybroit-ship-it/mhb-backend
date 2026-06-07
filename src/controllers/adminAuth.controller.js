@@ -24,6 +24,35 @@ const MAX_ATTEMPTS = 5;
 
 const generateCode = () => String(crypto.randomInt(0, 1_000_000)).padStart(6, "0");
 
+// The .env allowlist (ADMIN_EMAILS / SEED_ADMIN_EMAIL) is the single source of
+// truth for who may access the admin panel. The session layer (JWT + middleware)
+// still needs a real User document to hang req.user on, so we auto-provision one
+// the first time an allowlisted email signs in — no manual seeding required.
+// Returns the admin user, or null if the email isn't allowlisted.
+const ensureAdminUser = async (rawEmail) => {
+  const email = String(rawEmail || "").trim().toLowerCase();
+  if (!isAllowedAdminEmail(email)) return null;
+
+  let user = await User.findOne({ email });
+  if (user) {
+    // Existing account on the allowlist — make sure it has admin rights.
+    if (user.role !== "admin") {
+      user.role = "admin";
+      await user.save();
+    }
+    return user;
+  }
+
+  // No account yet — mirror the .env config into a fresh admin user.
+  return User.create({
+    _id: `u_admin_${Date.now().toString(36)}`,
+    name: env.seedAdmin.name,
+    email,
+    password: env.seedAdmin.password, // login is OTP-based; this just satisfies the schema
+    role: "admin",
+  });
+};
+
 export const requestAdminOtp = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const generic = {
@@ -33,13 +62,14 @@ export const requestAdminOtp = asyncHandler(async (req, res) => {
   };
 
   // Hard gate: only emails on the .env allowlist (ADMIN_EMAILS) may receive a
-  // code, and they must also be an admin user in the DB. Anything else is
-  // rejected outright with a clear message — for an internal admin panel we
-  // prefer obvious "not authorized" feedback over anti-enumeration secrecy.
-  if (!isAllowedAdminEmail(email) || !(await User.findOne({ email, role: "admin" }))) {
+  // code. The matching admin user is auto-provisioned from .env if it doesn't
+  // exist yet, so the allowlist is the single source of truth — no DB seeding.
+  // Anything not on the allowlist is rejected outright with a clear message; for
+  // an internal admin panel we prefer obvious feedback over enumeration secrecy.
+  const user = await ensureAdminUser(email);
+  if (!user) {
     throw ApiError.forbidden("This email isn't authorized for admin access.");
   }
-  const user = await User.findOne({ email, role: "admin" });
 
   const code = generateCode();
   const codeHash = await bcrypt.hash(code, 10);
@@ -100,7 +130,7 @@ export const verifyAdminOtp = asyncHandler(async (req, res) => {
   // Success — burn the code and any siblings, then issue the session.
   await AdminOtp.deleteMany({ email, purpose: "admin_login" });
 
-  const user = await User.findOne({ email, role: "admin" });
+  const user = await ensureAdminUser(email);
   if (!user) throw ApiError.forbidden("This account no longer has admin access.");
 
   const token = signToken({ sub: user._id, role: user.role });

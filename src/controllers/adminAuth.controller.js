@@ -32,17 +32,14 @@ export const requestAdminOtp = asyncHandler(async (req, res) => {
     expiresInSeconds: TTL_MINUTES * 60,
   };
 
-  // Gate 1: the email MUST be on the .env allowlist (ADMIN_EMAILS). A DB admin
-  // role is not sufficient. Gate 2: it must also be an admin user in the DB.
-  // Either failure returns the same generic response (no account enumeration).
-  if (!isAllowedAdminEmail(email)) {
-    return res.json(generic);
+  // Hard gate: only emails on the .env allowlist (ADMIN_EMAILS) may receive a
+  // code, and they must also be an admin user in the DB. Anything else is
+  // rejected outright with a clear message — for an internal admin panel we
+  // prefer obvious "not authorized" feedback over anti-enumeration secrecy.
+  if (!isAllowedAdminEmail(email) || !(await User.findOne({ email, role: "admin" }))) {
+    throw ApiError.forbidden("This email isn't authorized for admin access.");
   }
   const user = await User.findOne({ email, role: "admin" });
-  if (!user) {
-    // Don't reveal whether the email is an admin — respond the same.
-    return res.json(generic);
-  }
 
   const code = generateCode();
   const codeHash = await bcrypt.hash(code, 10);

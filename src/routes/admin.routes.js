@@ -13,7 +13,7 @@ import {
   storageStatus, presign, createRecord, uploadFile, listMedia, patchMedia, deleteMedia,
 } from "../controllers/media.controller.js";
 import { listSubscribers, removeSubscriber } from "../controllers/newsletter.controller.js";
-import { dashboardStats, exportContent, importContent } from "../controllers/admin.controller.js";
+import { dashboardStats, exportContent, importContent, listUsers } from "../controllers/admin.controller.js";
 
 const router = Router();
 router.use(requireAdmin);
@@ -27,6 +27,9 @@ router.post("/import", importContent);
 router.get("/content", getAllSingletons);
 router.get("/content/:key", getSingleton);
 router.put("/content/:key", putSingleton);
+
+// ── Site users (read-only — CRM traveller picker) ─────────────────────────
+router.get("/users", listUsers);
 
 // ── Newsletter subscribers ───────────────────────────────────────────────
 router.get("/newsletter", listSubscribers);

@@ -7,7 +7,7 @@ import { ApiError } from "../utils/ApiError.js";
 import {
   Destination, Weekend,
   Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate,
-  TripQuery, NewsletterSubscriber, Singleton, SINGLETON_KEYS,
+  TripQuery, TeamMember, CustomPackage, QuoteTemplate, User, NewsletterSubscriber, Singleton, SINGLETON_KEYS,
 } from "../models/index.js";
 
 // Map of export key → model, matching keys used by the admin store SEED.
@@ -22,7 +22,17 @@ const COLLECTION_MAP = {
   blocks: Block,
   tripTemplates: TripTemplate,
   tripQueries: TripQuery,
+  teamMembers: TeamMember,
+  customPackages: CustomPackage,
+  quoteTemplates: QuoteTemplate,
 };
+
+// Read-only list of site account holders — used by the CRM's traveller picker.
+// (Full user management was removed; this is intentionally listing-only.)
+export const listUsers = asyncHandler(async (_req, res) => {
+  const users = await User.find().sort("name").lean();
+  res.json({ data: users.map(({ password, ...u }) => u), total: users.length });
+});
 
 // Strip Mongo bookkeeping so exported docs read like the original seed objects.
 const clean = (doc) => {

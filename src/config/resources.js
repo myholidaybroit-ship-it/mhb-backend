@@ -6,7 +6,7 @@
 import {
   Destination, Weekend,
   Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate,
-  TripQuery,
+  TripQuery, TeamMember, CustomPackage, QuoteTemplate,
 } from "../models/index.js";
 
 /**
@@ -73,6 +73,24 @@ export const RESOURCES = [
     public: false, idPrefix: "tq",
     searchFields: ["destination", "guest.name", "guest.phone", "guest.email", "assignedTo"],
     filterFields: ["status", "assignedTo"],
+  },
+  {
+    path: "team-members", model: TeamMember, label: "Team member", seedKey: "teamMembers",
+    public: false, idPrefix: "tm",
+    searchFields: ["name", "email", "phone"], filterFields: ["active", "role"],
+    defaultSort: "name",
+  },
+  {
+    path: "custom-packages", model: CustomPackage, label: "Custom package", seedKey: "customPackages",
+    public: false, idPrefix: "cp",
+    searchFields: ["title", "destination", "traveller.name", "traveller.phone"],
+    filterFields: ["status"],
+  },
+  {
+    path: "quote-templates", model: QuoteTemplate, label: "Quote template", seedKey: "quoteTemplates",
+    public: false, idPrefix: "qtpl",
+    searchFields: ["name", "destination"], filterFields: ["destination"],
+    defaultSort: "name",
   },
 ];
 

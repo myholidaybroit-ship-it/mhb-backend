@@ -1,19 +1,21 @@
-// Validation for the three public enquiry forms. A discriminated union keyed on
-// `type` keeps each form's required fields honest while staying permissive about
-// extra metadata the front end may attach.
+// Validation for the public enquiry forms. A discriminated union keyed on
+// `type` keeps each form's required fields honest while staying permissive
+// about extra metadata the front end may attach. All of them feed the Sales
+// CRM pipeline (trip queries).
 
 import { z } from "zod";
 
 const base = {
-  name: z.string().trim().min(1).optional(),
+  name: z.string().trim().min(1, "Name is required"),
   email: z.string().trim().toLowerCase().email("Enter a valid email"),
   phone: z.string().trim().min(5, "Enter a valid phone number"),
+  city: z.string().trim().optional(),
+  travelMonth: z.string().trim().optional(), // "2026-11" from <input type=month>
 };
 
 const quote = z.object({
   type: z.literal("quote"),
   ...base,
-  name: z.string().trim().min(1, "Name is required"),
   destination: z.string().trim().min(1, "Destination is required"),
   package: z.string().trim().optional(),
   adults: z.coerce.number().int().min(1).default(1),
@@ -24,22 +26,18 @@ const quote = z.object({
 const weekend = z.object({
   type: z.literal("weekend"),
   ...base,
-  name: z.string().trim().min(1, "Name is required"),
   trip: z.string().trim().min(1, "Trip is required"),
   price: z.string().optional(),
   channel: z.enum(["Callback", "WhatsApp"]).default("Callback"),
 }).passthrough();
 
+// Contact form is deliberately lighter: name, email, phone + a message.
 const contact = z.object({
   type: z.literal("contact"),
+  name: base.name,
   email: base.email,
   phone: base.phone,
-  firstName: z.string().trim().min(1, "First name is required"),
-  lastName: z.string().trim().optional(),
-  category: z.string().trim().optional(),
-  destination: z.string().trim().optional(),
   message: z.string().trim().min(1, "Tell us a little about your trip"),
-  marketing: z.boolean().optional().default(false),
 }).passthrough();
 
 export const enquirySchema = z.discriminatedUnion("type", [quote, weekend, contact]);

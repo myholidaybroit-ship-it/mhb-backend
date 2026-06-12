@@ -526,53 +526,20 @@ export const SEED_USERS = [
   { id: "u_neha", name: "Neha Reddy", email: "neha@example.com", role: "Customer", createdAt: "2026-05-25" },
 ];
 
-// ---- Travelers (people on a trip). source: "manual" | "user" (linked to a signup) ----
-export const SEED_TRAVELERS = [
-  { id: "t1", name: "Aisha Khan", email: "aisha@example.com", phone: "+91 98765 11111", age: 29, group: "Adult", source: "user", userId: "u_aisha" },
-  { id: "t2", name: "Rohit Verma", email: "rohit@example.com", phone: "+91 98765 22222", age: 34, group: "Adult", source: "user", userId: "u_rohit" },
-  { id: "t3", name: "Ira Verma", email: "", phone: "", age: 7, group: "Child", source: "manual", userId: null },
-];
-
-// ---- Traveler groups: named groups of people (families, friend circles) ----
-export const SEED_TRAVELER_GROUPS = [
-  { id: "g1", name: "Verma Family", memberIds: ["t2", "t3"] },
-];
-
-// ---- Package assignments: a package + chosen travelers + pricing ----
-export const SEED_ASSIGNMENTS = [];
-
-// Enquiries come from 3 front-end forms — each has its own `type` + fields:
-//  quote   → destination "Get a free quote" (package, pax, total)
-//  weekend → weekend-trip "Request a callback / WhatsApp"
-//  contact → "Tell us about your dream holiday" custom form
-export const SEED_ENQUIRIES = [
-  { id: "q1", type: "quote", name: "Ishaan Gupta", email: "ishaan@example.com", phone: "+91 98765 43210", destination: "Bali", package: "Bali Honeymoon Special — 6D · ₹24,999", adults: 2, children: 0, total: "₹52,498", status: "New", createdAt: "2026-06-02" },
-  { id: "q2", type: "quote", name: "Rhea Sharma", email: "rhea@example.com", phone: "+91 99887 66554", destination: "Goa", package: "Goa Super Saver — 4D · ₹7,999", adults: 2, children: 1, total: "₹16,798", status: "In progress", createdAt: "2026-06-01" },
-  { id: "w1", type: "weekend", name: "Meera Nair", email: "meera@example.com", phone: "+91 90000 11111", trip: "Ooty, Coonoor & Isha", price: "₹6,999", channel: "Callback", status: "New", createdAt: "2026-06-03" },
-  { id: "w2", type: "weekend", name: "Arjun Rao", email: "arjun@example.com", phone: "+91 98111 22233", trip: "Coorg & Chikmagalur", price: "₹9,999", channel: "WhatsApp", status: "Closed", createdAt: "2026-05-28" },
-  { id: "c1", type: "contact", firstName: "Priya", lastName: "Menon", email: "priya@example.com", phone: "+91 98765 00000", category: "Honeymoon", destination: "Maldives", message: "Planning our honeymoon in November, 5 nights, overwater villa preferred.", marketing: true, status: "New", createdAt: "2026-06-04" },
-  { id: "c2", type: "contact", firstName: "Karan", lastName: "Singh", email: "karan@example.com", phone: "+91 90909 80808", category: "Family", destination: "Singapore", message: "Family of 4 (2 kids) for the December break. Need flight-inclusive options.", marketing: false, status: "In progress", createdAt: "2026-06-02" },
-];
-
-// ---- Moments: video testimonials (the "Straight from our travellers" / 45-sec stories) ----
-const VID = "https://res.cloudinary.com/dyxxkrq8r/video/upload/v1779219201/WhatsApp_Video_2026-05-16_at_1.31.18_PM_pa9p61.mp4";
-export const SEED_TESTIMONIALS = [
-  { id: "v1", name: "Aishwarya", dest: "Bali", quote: "Felt like a private concierge planned every minute.", video: VID, poster: "" },
-  { id: "v2", name: "Harish", dest: "Thailand", quote: "Best 7 days I've spent in years. Zero stress.", video: VID, poster: "" },
-  { id: "v3", name: "Priyadarshini", dest: "Singapore", quote: "Kids loved every day — MHB nailed the schedule.", video: VID, poster: "" },
-  { id: "v4", name: "Mahesh", dest: "Europe", quote: "Multi-country and never felt rushed.", video: VID, poster: "" },
-  { id: "v5", name: "Sneha", dest: "Vietnam", quote: "Hoi An lanterns at night — that's the moment.", video: VID, poster: "" },
-];
-
-// ---- Moments: traveller stories / postcard reviews (the photo gallery) ----
-export const SEED_MOMENTS = [
-  { id: "m1", initial: "S", name: "Shiv", city: "Hyderabad", caption: "6 Day Singapore + Malaysia escape", destination: "Singapore · Malaysia", duration: "6 Days · 5 Nights", rating: 5, title: "Felt like every detail was thought through", review: "From airport pickup to the last dinner, everything was handled. We just showed up and enjoyed.", date: "May 2026", image: wix("nsplsh_df573ee0f6154a9a80b452293e2c0475~mv2.jpg") },
-  { id: "m2", initial: "A", name: "Abi", city: "Chennai", caption: "5 Night couple in Langkawi", destination: "Langkawi · Malaysia", duration: "5 Days · 4 Nights", rating: 5, title: "Quietest, most romantic trip we've done", review: "Overwater views, a private dinner on the beach, and not a single thing to worry about.", date: "Apr 2026", image: wix("nsplsh_05291b47a88e40e986ad33b6de021909~mv2.jpg") },
-  { id: "m3", initial: "H", name: "Hari", city: "Mumbai", caption: "7 Day Bali deep dive", destination: "Ubud · Seminyak · Uluwatu", duration: "7 Days · 6 Nights", rating: 5, title: "My first solo trip and they nailed it", review: "Ubud was my favourite — monkey forest, rice terraces, yoga at sunrise. Every day was paced perfectly.", date: "Feb 2026", image: wix("nsplsh_657846644f576b59425177~mv2.jpg") },
-  { id: "m4", initial: "P", name: "Priya", city: "Bengaluru", caption: "6 Day Vietnam explorer", destination: "Hanoi · Halong · Hoi An", duration: "6 Days · 5 Nights", rating: 5, title: "Vietnam still had something in me", review: "Halong Bay cruise was unreal and the food blew us away. Smooth transfers throughout.", date: "Mar 2026", image: wix("11062b_a0faae69bec6475c834fa172822d6ba9~mv2.jpeg") },
-  { id: "m5", initial: "N", name: "Neha", city: "Jaipur", caption: "8 Day Singapore + wildlife", destination: "Singapore · Sentosa", duration: "8 Days · 7 Nights", rating: 4, title: "Kids loved every bit of it", review: "Night safari, Universal Studios and Gardens by the Bay — the kids are still talking about it.", date: "Dec 2025", image: wix("e7beb6_45e14c300a1f4d98a7b96422aaac6f10~mv2.jpg") },
-  { id: "m6", initial: "R", name: "Rohan", city: "Pune", caption: "5 Day Dubai solo adventure", destination: "Dubai", duration: "5 Days · 4 Nights", rating: 5, title: "A Himalayan reset we needed", review: "Desert safari, Burj Khalifa, and the gold souk. Fast-paced but every transfer was on time.", date: "Jan 2026", image: wix("e7beb6_45e14c300a1f4d98a7b96422aaac6f10~mv2.jpg") },
-];
+// ---- Moments collections ----
+// The story videos and postcard reviews authored above (inside SEED_HOME) are
+// the live site content, but they're served from the `testimonials` and
+// `moments` COLLECTIONS (edited on the admin Moments page) — not the home
+// singleton. Derive the collections from the authored arrays, then strip the
+// copies out of SEED_HOME so there's exactly one source of truth.
+export const SEED_TESTIMONIALS = (SEED_HOME.stories.items || []).map((s, i) => ({
+  id: `v_${s.id ?? i + 1}`, name: s.name, dest: s.dest, video: s.video, quote: s.quote || "", poster: s.poster || "", order: i,
+}));
+export const SEED_MOMENTS = (SEED_HOME.moments.items || []).map((c, i) => ({
+  ...c, id: `m_${c.id ?? i + 1}`, order: i,
+}));
+SEED_HOME.stories = { title: SEED_HOME.stories.title };
+SEED_HOME.moments = { title: SEED_HOME.moments.title };
 
 // ---- Careers page: open roles, perks and intro copy ----
 export const SEED_CAREERS = {
@@ -779,10 +746,6 @@ export const SEED = {
   contact: SEED_CONTACT,
   adventureStyles: SEED_ADVENTURE_STYLES,
   users: SEED_USERS,
-  travelers: SEED_TRAVELERS,
-  travelerGroups: SEED_TRAVELER_GROUPS,
-  assignments: SEED_ASSIGNMENTS,
-  enquiries: SEED_ENQUIRIES,
   settings: SEED_SETTINGS,
   testimonials: SEED_TESTIMONIALS,
   moments: SEED_MOMENTS,

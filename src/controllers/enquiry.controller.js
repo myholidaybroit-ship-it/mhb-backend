@@ -1,9 +1,7 @@
-// Public enquiry intake (quote / weekend / contact forms) + admin status update.
-// Listing, fetching and deleting enquiries is handled by the generic CRUD
-// controller mounted under /api/admin/enquiries.
+// Public enquiry intake (quote / weekend / contact forms). Submissions are
+// stored and the team is notified by email.
 
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
 import { uid } from "../utils/ids.js";
 import { Enquiry } from "../models/index.js";
 import { emails } from "../services/email.js";
@@ -21,14 +19,4 @@ export const createEnquiry = asyncHandler(async (req, res) => {
   emails.enquiryAck(enquiry);
 
   res.status(201).json({ data: enquiry, message: "Thanks! Our team will reach out shortly." });
-});
-
-export const updateStatus = asyncHandler(async (req, res) => {
-  const enquiry = await Enquiry.findByIdAndUpdate(
-    req.params.id,
-    { $set: { status: req.body.status } },
-    { new: true }
-  ).lean();
-  if (!enquiry) throw ApiError.notFound("Enquiry not found");
-  res.json({ data: enquiry });
 });

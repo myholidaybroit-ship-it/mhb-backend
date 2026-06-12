@@ -3,10 +3,8 @@
 export { User } from "./User.js";
 export { Destination } from "./Destination.js";
 export { Weekend } from "./Weekend.js";
-export { Traveler } from "./Traveler.js";
-export { TravelerGroup } from "./TravelerGroup.js";
-export { Assignment } from "./Assignment.js";
 export { Enquiry } from "./Enquiry.js";
+export { TripQuery } from "./TripQuery.js";
 export { Testimonial } from "./Testimonial.js";
 export { Moment } from "./Moment.js";
 export { Itinerary } from "./Itinerary.js";

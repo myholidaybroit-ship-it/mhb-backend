@@ -48,7 +48,3 @@ export const newsletterSchema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email"),
   source: z.string().optional(),
 });
-
-export const statusSchema = z.object({
-  status: z.enum(["New", "In progress", "Closed"]),
-});

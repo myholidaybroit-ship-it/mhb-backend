@@ -1,6 +1,5 @@
 // Bookings — a traveller's confirmed/requested trip, shown on the account page
-// "Bookings" tab. Created when a logged-in user books a package; admins can
-// also create and advance these.
+// "Bookings" tab. Created when a logged-in user books a package.
 
 import mongoose from "mongoose";
 

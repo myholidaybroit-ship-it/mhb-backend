@@ -13,7 +13,7 @@ import { connectDB, disconnectDB } from "../config/db.js";
 import { env } from "../config/env.js";
 import { SEED } from "./data/seed.js";
 import {
-  User, Destination, Weekend, Traveler, TravelerGroup, Assignment, Enquiry,
+  User, Destination, Weekend,
   Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate, Singleton,
 } from "../models/index.js";
 
@@ -21,10 +21,6 @@ import {
 const COLLECTIONS = [
   ["destinations", Destination, "slug"],
   ["weekends", Weekend, "id"],
-  ["travelers", Traveler, "id"],
-  ["travelerGroups", TravelerGroup, "id"],
-  ["assignments", Assignment, "id"],
-  ["enquiries", Enquiry, "id"],
   ["testimonials", Testimonial, "id"],
   ["moments", Moment, "id"],
   ["itineraries", Itinerary, "id"],

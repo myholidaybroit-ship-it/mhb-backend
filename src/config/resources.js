@@ -4,8 +4,9 @@
 // so adding a new collection is a one-line change here.
 
 import {
-  Destination, Weekend, Traveler, TravelerGroup, Assignment, Enquiry,
+  Destination, Weekend,
   Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate,
+  TripQuery,
 } from "../models/index.js";
 
 /**
@@ -68,24 +69,10 @@ export const RESOURCES = [
     searchFields: ["title", "clientName", "destination", "tripId"], filterFields: ["status", "destination"],
   },
   {
-    path: "travelers", model: Traveler, label: "Traveler", seedKey: "travelers",
-    public: false, idPrefix: "t",
-    searchFields: ["name", "email", "phone"], filterFields: ["source", "group"],
-  },
-  {
-    path: "traveler-groups", model: TravelerGroup, label: "Traveler group", seedKey: "travelerGroups",
-    public: false, idPrefix: "g",
-    searchFields: ["name"], filterFields: [],
-  },
-  {
-    path: "assignments", model: Assignment, label: "Assignment", seedKey: "assignments",
-    public: false, idPrefix: "as",
-    searchFields: ["packageName", "destination"], filterFields: ["status"],
-  },
-  {
-    path: "enquiries", model: Enquiry, label: "Enquiry", seedKey: "enquiries",
-    public: false, idPrefix: "q",
-    searchFields: ["name", "email", "phone", "destination", "trip"], filterFields: ["type", "status"],
+    path: "trip-queries", model: TripQuery, label: "Trip query", seedKey: "tripQueries",
+    public: false, idPrefix: "tq",
+    searchFields: ["destination", "guest.name", "guest.phone", "guest.email", "assignedTo"],
+    filterFields: ["status", "assignedTo"],
   },
 ];
 

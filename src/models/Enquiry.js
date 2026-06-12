@@ -11,7 +11,7 @@ const schema = flexibleSchema({
   name: String,
   email: { type: String, index: true },
   phone: String,
-  status: { type: String, enum: ["New", "In progress", "Closed"], default: "New", index: true },
+  status: { type: String, default: "New", index: true },
 });
 
 export const Enquiry = mongoose.model("Enquiry", schema, "enquiries");

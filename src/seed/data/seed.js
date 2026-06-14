@@ -733,7 +733,7 @@ export const SEED_CONTACT = {
 };
 
 import {
-  SEED_PLACES, SEED_HOTELS, SEED_BLOCKS, SEED_ITINERARIES, SEED_TRIP_TEMPLATES,
+  SEED_PLACES, SEED_HOTELS, SEED_TRANSPORTS, SEED_BLOCKS, SEED_ITINERARIES, SEED_TRIP_TEMPLATES,
 } from "./itinerarySeed.js";
 
 export const SEED = {
@@ -755,6 +755,7 @@ export const SEED = {
   itineraries: SEED_ITINERARIES,
   places: SEED_PLACES,
   hotels: SEED_HOTELS,
+  transports: SEED_TRANSPORTS,
   blocks: SEED_BLOCKS,
   tripTemplates: SEED_TRIP_TEMPLATES,
 };

@@ -14,7 +14,7 @@ import { env } from "../config/env.js";
 import { SEED } from "./data/seed.js";
 import {
   User, Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate, Singleton,
+  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, TripTemplate, Singleton,
 } from "../models/index.js";
 
 // seedKey → { Model, idField } for the array collections.
@@ -26,6 +26,7 @@ const COLLECTIONS = [
   ["itineraries", Itinerary, "id"],
   ["places", Place, "id"],
   ["hotels", Hotel, "id"],
+  ["transports", Transport, "id"],
   ["blocks", Block, "id"],
   ["tripTemplates", TripTemplate, "id"],
 ];

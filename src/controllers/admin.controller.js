@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import {
   Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate,
+  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, TripTemplate,
   TripQuery, TeamMember, CustomPackage, QuoteTemplate, User, NewsletterSubscriber, Singleton, SINGLETON_KEYS,
 } from "../models/index.js";
 
@@ -19,6 +19,7 @@ const COLLECTION_MAP = {
   itineraries: Itinerary,
   places: Place,
   hotels: Hotel,
+  transports: Transport,
   blocks: Block,
   tripTemplates: TripTemplate,
   tripQueries: TripQuery,

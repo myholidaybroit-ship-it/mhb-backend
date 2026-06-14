@@ -12,6 +12,7 @@ export { Moment } from "./Moment.js";
 export { Itinerary } from "./Itinerary.js";
 export { Place } from "./Place.js";
 export { Hotel } from "./Hotel.js";
+export { Transport } from "./Transport.js";
 export { Block } from "./Block.js";
 export { TripTemplate } from "./TripTemplate.js";
 export { NewsletterSubscriber } from "./NewsletterSubscriber.js";

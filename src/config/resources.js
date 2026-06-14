@@ -5,7 +5,7 @@
 
 import {
   Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Block, TripTemplate,
+  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, TripTemplate,
   TripQuery, TeamMember, CustomPackage, QuoteTemplate,
 } from "../models/index.js";
 
@@ -46,12 +46,17 @@ export const RESOURCES = [
   {
     path: "places", model: Place, label: "Place", seedKey: "places",
     public: false, idPrefix: "pl",
-    searchFields: ["name", "description"], filterFields: [],
+    searchFields: ["name", "description", "city"], filterFields: ["city", "category"],
   },
   {
     path: "hotels", model: Hotel, label: "Hotel", seedKey: "hotels",
     public: false, idPrefix: "ht",
-    searchFields: ["name", "location"], filterFields: [],
+    searchFields: ["name", "location", "city"], filterFields: ["city", "category"],
+  },
+  {
+    path: "transports", model: Transport, label: "Transport", seedKey: "transports",
+    public: false, idPrefix: "tr",
+    searchFields: ["name", "city", "vehicle"], filterFields: ["city"],
   },
   {
     path: "blocks", model: Block, label: "Content block", seedKey: "blocks",

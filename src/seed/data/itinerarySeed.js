@@ -51,6 +51,17 @@ export const SEED_PLACES = [
     description: "Pura Penataran Agung Lempuyang on the slope of Mount Lempuyang in Karangasem, Bali — the famous 'Gateway to Heaven'." },
   { id: "pl_tirta", name: "Tirta Gangga Water Palace", duration: "", note: "Entrance ticket is included", image: IMG.forest,
     description: "A former royal palace in eastern Bali, about 5 km from Karangasem near Abang." },
+
+  // ---- Thailand starter catalog (priced for the package builder, in INR) ----
+  { id: "pl_coral", name: "Coral Island Tour Pattaya with lunch on Speed Boat", city: "Pattaya", category: "Tour", basis: "SIC",
+    duration: "Full Day", adultPrice: 3100, childPrice: 2300, currency: "INR", note: "Lunch included", image: IMG.beach,
+    description: "Speed boat to Coral (Koh Larn) Island with lunch — a Pattaya favourite." },
+  { id: "pl_chaophraya", name: "Chao Phraya Dinner Cruise (Bangkok)", city: "Bangkok", category: "Cruise", basis: "SIC",
+    duration: "3 Hrs", adultPrice: 2600, childPrice: 1800, currency: "INR", note: "Dinner included", image: IMG.city,
+    description: "Evening dinner cruise along the Chao Phraya river past Bangkok's lit-up landmarks." },
+  { id: "pl_safari", name: "Safari World with Marine Park with lunch", city: "Bangkok", category: "Activity", basis: "SIC",
+    duration: "Full Day", adultPrice: 3900, childPrice: 3100, currency: "INR", note: "Monday closed · lunch included", image: IMG.forest,
+    description: "Open-zoo safari drive plus a marine park with dolphin and sea-lion shows." },
 ];
 
 // ---- Reusable Hotels library ----
@@ -61,6 +72,24 @@ export const SEED_HOTELS = [
   { id: "ht_freddies", name: "Freddies Villa Ubud", location: "6.6 kms from Goa Gajah", rating: 4, score: "4.3",
     checkin: "2:00 PM", checkout: "12:00 PM", mealPlan: "Breakfast", images: [IMG.forest, IMG.hill, IMG.bali, IMG.temple],
     rooms: [{ type: "Villa Room", occupancy: "2 Pax", refundable: false, breakfast: true }] },
+
+  // ---- Thailand starter catalog (priced for the package builder, in INR) ----
+  { id: "ht_ibis_bkk", name: "ibis Bangkok Sukhumvit 4", city: "Bangkok", category: "3 Star", location: "Sukhumvit, Bangkok",
+    rating: 3, score: "4.0", mealPlan: "CP", currency: "INR", checkin: "2:00 PM", checkout: "12:00 PM",
+    images: [IMG.city, IMG.beach, IMG.temple],
+    rooms: [{ type: "Superior room", mealPlan: "CP", price: 3600, exAdult: 1500, exChild: 900, occupancy: "2 Pax", breakfast: true }] },
+  { id: "ht_ibis_pattaya", name: "ibis Pattaya", city: "Pattaya", category: "3 Star", location: "Central Pattaya",
+    rating: 3, score: "4.1", mealPlan: "CP", currency: "INR", checkin: "2:00 PM", checkout: "12:00 PM",
+    images: [IMG.beach, IMG.city, IMG.bali],
+    rooms: [{ type: "Standard room", mealPlan: "CP", price: 3100, exAdult: 1400, exChild: 800, occupancy: "2 Pax", breakfast: true }] },
+];
+
+// ---- Reusable Transport library (priced for the package builder, in INR) ----
+export const SEED_TRANSPORTS = [
+  { id: "tr_bkk_arr", name: "01 Way Taxi From BKK Airport To Bangkok Hotel", city: "Bangkok", vehicle: "Van", capacity: 8, basis: "Private", price: 2600, currency: "INR" },
+  { id: "tr_pty_bkk_city", name: "01 Way Taxi From Pattaya Hotel To Bangkok Hotel on Route City tour", city: "Pattaya", vehicle: "Van", capacity: 8, basis: "Private", price: 5700, currency: "INR" },
+  { id: "tr_pty_dep", name: "01 Way Taxi From Pattaya Hotel to BKK Airport", city: "Pattaya", vehicle: "Van", capacity: 8, basis: "Private", price: 4700, currency: "INR" },
+  { id: "tr_bkk_pty", name: "01 Way Taxi From BKK Airport To Pattaya Hotel", city: "Bangkok", vehicle: "Van", capacity: 8, basis: "Private", price: 4700, currency: "INR" },
 ];
 
 // ---- Reusable content blocks (notes / inclusions / exclusions / terms) ----

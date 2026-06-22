@@ -5,9 +5,11 @@
 
 import {
   Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, TripTemplate,
+  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, Blog, TripTemplate,
   TripQuery, TeamMember, CustomPackage, QuoteTemplate,
 } from "../models/index.js";
+import { ensurePackageSlugs } from "../utils/packageSlugs.js";
+import { normalizeBlog } from "../utils/blog.js";
 
 /**
  * path          → URL segment (/api/<path>, /api/admin/<path>)
@@ -19,6 +21,7 @@ import {
  * idPrefix      → prefix for generated uids when there's no natural slug
  * searchFields  → fields matched by ?q=
  * filterFields  → query params allowed as exact-match filters
+ * transform     → optional (body) => body hook applied on every write
  */
 export const RESOURCES = [
   {
@@ -26,12 +29,24 @@ export const RESOURCES = [
     public: true, slugFrom: "name",
     searchFields: ["name", "country", "tagline"], filterFields: ["region", "country"],
     defaultSort: "name",
+    // Every package gets a stable, unique slug for its own SEO detail page.
+    transform: ensurePackageSlugs,
   },
   {
     path: "weekends", model: Weekend, label: "Weekend trip", seedKey: "weekends",
     public: true, slugFrom: "name",
     searchFields: ["name", "to", "from"], filterFields: ["region"],
     defaultSort: "name",
+  },
+  {
+    path: "blogs", model: Blog, label: "Blog post", seedKey: "blogs",
+    public: true, slugFrom: "title",
+    searchFields: ["title", "excerpt", "category"], filterFields: ["category", "status", "featured"],
+    defaultSort: "-publishedAt",
+    // Public API only ever returns published posts; drafts stay admin-only.
+    publicFilter: { status: "published" },
+    // Ensure publish date + read time on write.
+    transform: normalizeBlog,
   },
   {
     path: "moments", model: Moment, label: "Moment", seedKey: "moments",

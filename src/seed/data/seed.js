@@ -120,6 +120,60 @@ export const SEED_WEEKENDS = [
   { id: "yercaud-yelagiri", name: "Yercaud & Yelagiri", subtitle: "Twin hill stations", from: "Bengaluru", to: "Yercaud · Yelagiri", region: "South", days: 3, nights: 2, salePrice: "₹6,499", originalPrice: "₹9,499", savings: "₹3,000", rating: 4.5, reviews: 142, bestTime: "Sep – Mar", tag: "Quick Escape", status: "BOOK NOW", statusTone: "ok", image: wix("nsplsh_6c543972716647376c6351~mv2_d_5464_3070_s_4_2.jpg"), highlights: ["Pagoda Point", "Boat lake ride", "Punganur Lake"], description: "Two hill stations in one budget weekend — coffee estate viewpoints, paragliding skies and quiet lake mornings." },
 ];
 
+// ── Blog posts ────────────────────────────────────────────────────────────
+// Real, publishable blog content. `slug` becomes the Mongo _id; `body` is an
+// array of content blocks rendered by the front-end blog/[slug] page.
+export const SEED_BLOG_POSTS = [
+  {
+    slug: "best-time-to-visit-bali",
+    title: "Best Time to Visit Bali: A Month-by-Month Guide",
+    excerpt: "Dry season, festivals, surf swells and the cheapest months to fly — everything that decides when your Bali trip should happen.",
+    coverImage: img("bali"),
+    author: "MyHolidayBro Team",
+    authorRole: "Travel Editors",
+    category: "Travel Guide",
+    tags: ["Bali", "Indonesia", "When to go"],
+    status: "published",
+    featured: true,
+    publishedAt: "2026-04-08T09:00:00.000Z",
+    readTime: "7 min read",
+    seoTitle: "Best Time to Visit Bali (2026) — Month-by-Month Weather & Crowds",
+    seoDescription: "When is the best time to visit Bali? A month-by-month breakdown of weather, festivals, surf and prices to plan the perfect trip.",
+    body: [
+      { type: "paragraph", text: "Bali is a year-round destination, but the experience changes dramatically depending on when you go. The island has two seasons — dry and wet — and each brings its own rhythm of crowds, prices and things to do." },
+      { type: "heading", text: "The dry season (April–October)" },
+      { type: "paragraph", text: "This is peak season for good reason: sunny days, lower humidity and calm seas perfect for diving and island-hopping. July and August are the busiest and priciest months, so book stays well ahead." },
+      { type: "quote", text: "If you want the classic Bali postcard — golden beaches and clear skies — aim for May, June or September." },
+      { type: "heading", text: "The wet season (November–March)" },
+      { type: "paragraph", text: "Rain usually comes in short, heavy afternoon bursts rather than all-day downpours. The upside? Lush green rice terraces, fewer tourists and the best hotel deals of the year." },
+      { type: "list", items: ["May–June: great weather, smaller crowds", "July–Aug: peak season, book early", "Sept: shoulder-season sweet spot", "Jan–Feb: cheapest, greenest, occasional rain"] },
+      { type: "paragraph", text: "Whenever you go, our advisors tailor the itinerary to the season — chasing surf swells, festival dates or the quietest beaches." },
+    ],
+  },
+  {
+    slug: "book-now-pay-later-emi",
+    title: "Book Now, Pay Later: How EMI Travel Works at MyHolidayBro",
+    excerpt: "Spread the cost of your dream trip across easy monthly instalments — here's exactly how our no-stress EMI option works.",
+    coverImage: img("northeast"),
+    author: "MyHolidayBro Team",
+    authorRole: "Product",
+    category: "Tips",
+    tags: ["EMI", "Payments", "Planning"],
+    status: "published",
+    featured: false,
+    publishedAt: "2026-06-25T09:00:00.000Z",
+    readTime: "5 min read",
+    seoTitle: "Book Now, Pay Later — EMI Travel Plans | MyHolidayBro",
+    seoDescription: "Travel now and pay in easy monthly EMIs with MyHolidayBro. Here's how our book-now-pay-later option works, step by step.",
+    body: [
+      { type: "paragraph", text: "A great trip shouldn't have to wait for the perfect bank balance. Our Book Now, Pay Later option lets you lock in today's prices and pay across comfortable monthly instalments." },
+      { type: "heading", text: "How it works" },
+      { type: "list", items: ["Pick your package and pay a small booking amount", "Choose a 3, 6 or 9-month EMI plan at checkout", "Travel as planned — your balance is split into equal monthly payments"] },
+      { type: "paragraph", text: "There are no hidden charges, and you'll see the full schedule before you confirm. It's the easiest way to say yes to the trip now and sort the rest later." },
+    ],
+  },
+];
+
 export const SEED_HOME = {
   hero: {
     headline: "Plan your next Holiday",
@@ -347,6 +401,7 @@ export const SEED_NAV = {
     { label: "Destinations", href: "/destinations", highlight: false },
     { label: "Weekend Trips", href: "/weekends", highlight: true },
     { label: "Adventure Styles", href: "/adventure-styles", highlight: false },
+    { label: "Blog", href: "/blog", highlight: false },
     { label: "Moments", href: "/moments", highlight: false },
     { label: "Contact", href: "/contact", highlight: false },
   ],
@@ -361,17 +416,14 @@ export const SEED_FOOTER = {
     ]},
     { title: "Explore", links: [
       { label: "Destinations", href: "/destinations" }, { label: "Weekend Trips", href: "/weekends" },
-      { label: "Adventure Styles", href: "/adventure-styles" }, { label: "Moments", href: "/moments" },
-      { label: "Newsletter", href: "/newsletter" },
+      { label: "Adventure Styles", href: "/adventure-styles" }, { label: "Blog", href: "/blog" },
+      { label: "Moments", href: "/moments" }, { label: "Newsletter", href: "/newsletter" },
+      { label: "My wishlist", href: "/wishlist" },
     ]},
     { title: "Help & Policies", links: [
       { label: "Help Centre · FAQ", href: "/faq" }, { label: "Terms of Use", href: "/terms" },
       { label: "Privacy Policy", href: "/terms#privacy" }, { label: "Cookie Policy", href: "/terms#privacy" },
       { label: "Refund Policy", href: "/terms#refunds" },
-    ]},
-    { title: "Account", links: [
-      { label: "Log in", href: "/login" }, { label: "Create account", href: "/signup" },
-      { label: "My wishlist", href: "/wishlist" }, { label: "My account", href: "/account" },
     ]},
   ],
   offices: [
@@ -739,6 +791,7 @@ import {
 export const SEED = {
   destinations: SEED_DESTINATIONS,
   weekends: SEED_WEEKENDS,
+  blogs: SEED_BLOG_POSTS,
   home: SEED_HOME,
   nav: SEED_NAV,
   footer: SEED_FOOTER,

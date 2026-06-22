@@ -14,8 +14,9 @@ import { env } from "../config/env.js";
 import { SEED } from "./data/seed.js";
 import {
   User, Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, TripTemplate, Singleton,
+  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, Blog, TripTemplate, Singleton,
 } from "../models/index.js";
+import { ensurePackageSlugs } from "../utils/packageSlugs.js";
 
 // seedKey → { Model, idField } for the array collections.
 const COLLECTIONS = [
@@ -28,6 +29,7 @@ const COLLECTIONS = [
   ["hotels", Hotel, "id"],
   ["transports", Transport, "id"],
   ["blocks", Block, "id"],
+  ["blogs", Blog, "slug"],
   ["tripTemplates", TripTemplate, "id"],
 ];
 
@@ -47,6 +49,8 @@ async function seedCollections(fresh) {
       // _id comes from the query filter on upsert; never put it in $set
       // (Mongoose rejects updating the immutable _id path on existing docs).
       const { _id: _drop, ...body } = row;
+      // Destinations: give every package a stable slug for its own SEO page.
+      if (key === "destinations") ensurePackageSlugs(body);
       await Model.findByIdAndUpdate(
         _id,
         { $set: body },

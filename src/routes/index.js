@@ -3,7 +3,6 @@
 import { Router } from "express";
 import authRoutes from "./auth.routes.js";
 import publicRoutes from "./public.routes.js";
-import accountRoutes from "./account.routes.js";
 import adminRoutes from "./admin.routes.js";
 
 const router = Router();
@@ -11,7 +10,9 @@ const router = Router();
 router.get("/health", (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
 router.use("/auth", authRoutes);
-router.use("/account", accountRoutes);
+// Customer self-service (/account: profile, wishlist sync, bookings) is
+// disabled while the site has no customer accounts. The route file
+// (account.routes.js) is kept in place for an easy future re-enable.
 router.use("/admin", adminRoutes);
 
 // Public read + form endpoints mount at the /api root (e.g. /api/destinations).

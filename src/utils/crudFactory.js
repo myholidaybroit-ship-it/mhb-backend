@@ -31,11 +31,16 @@ function buildFilter(resource, query) {
   return filter;
 }
 
-export function makeCrudController(resource) {
+export function makeCrudController(resource, opts = {}) {
   const Model = resource.model;
+  // On the public router, apply the resource's publicFilter (e.g. only
+  // status:"published" blogs) so drafts never leak. Admin sees everything.
+  const scopeFilter =
+    opts.scope === "public" && resource.publicFilter ? resource.publicFilter : null;
 
   const list = asyncHandler(async (req, res) => {
     const filter = buildFilter(resource, req.query);
+    if (scopeFilter) Object.assign(filter, scopeFilter);
     const limit = Math.min(Number(req.query.limit) || resource.defaultLimit || 200, 500);
     const page = Math.max(Number(req.query.page) || 1, 1);
     const sort = req.query.sort || resource.defaultSort || "-createdAt";
@@ -51,11 +56,18 @@ export function makeCrudController(resource) {
   const getOne = asyncHandler(async (req, res) => {
     const item = await Model.findById(req.params.id).lean();
     if (!item) throw ApiError.notFound(`${resource.label} not found`);
+    // Hide records the public scope shouldn't see (e.g. draft blog posts).
+    if (scopeFilter) {
+      for (const [k, v] of Object.entries(scopeFilter)) {
+        if (item[k] !== v) throw ApiError.notFound(`${resource.label} not found`);
+      }
+    }
     res.json({ data: item });
   });
 
   const create = asyncHandler(async (req, res) => {
-    const body = { ...req.body };
+    let body = { ...req.body };
+    if (resource.transform) body = resource.transform(body);
 
     // Derive a stable _id if the client didn't supply one.
     if (!body._id) {
@@ -76,7 +88,8 @@ export function makeCrudController(resource) {
   // PUT = full replace of the document body (keeps _id). Mirrors the admin
   // store's `upsert`, so it creates the doc if it doesn't exist yet.
   const upsert = asyncHandler(async (req, res) => {
-    const body = { ...req.body, _id: req.params.id };
+    let body = { ...req.body, _id: req.params.id };
+    if (resource.transform) body = resource.transform(body);
     const saved = await Model.findOneAndReplace({ _id: req.params.id }, body, {
       upsert: true,
       new: true,
@@ -88,7 +101,8 @@ export function makeCrudController(resource) {
 
   // PATCH = partial update.
   const patch = asyncHandler(async (req, res) => {
-    const { _id, ...rest } = req.body;
+    let { _id, ...rest } = req.body;
+    if (resource.transform) rest = resource.transform(rest);
     const updated = await Model.findByIdAndUpdate(
       req.params.id,
       { $set: rest },

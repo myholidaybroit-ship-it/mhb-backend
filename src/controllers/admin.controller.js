@@ -5,28 +5,20 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import {
-  Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, Blog, TripTemplate,
-  TripQuery, TeamMember, CustomPackage, QuoteTemplate, User, NewsletterSubscriber, Singleton, SINGLETON_KEYS,
+  Destination, Weekend, Testimonial, Moment, Itinerary, Blog, TripQuery,
+  User, NewsletterSubscriber, Singleton, SINGLETON_KEYS,
 } from "../models/index.js";
 
-// Map of export key → model, matching keys used by the admin store SEED.
+// Map of export key → model, matching keys used by the admin store. Scoped to
+// website content, the itinerary builder and the website query inbox.
 const COLLECTION_MAP = {
   destinations: Destination,
   weekends: Weekend,
   testimonials: Testimonial,
   moments: Moment,
   itineraries: Itinerary,
-  places: Place,
-  hotels: Hotel,
-  transports: Transport,
-  blocks: Block,
   blogs: Blog,
-  tripTemplates: TripTemplate,
   tripQueries: TripQuery,
-  teamMembers: TeamMember,
-  customPackages: CustomPackage,
-  quoteTemplates: QuoteTemplate,
 };
 
 // Read-only list of site account holders — used by the CRM's traveller picker.

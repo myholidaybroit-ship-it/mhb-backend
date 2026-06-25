@@ -119,30 +119,40 @@ export async function subscribeContact(email, attributes = {}) {
 }
 
 // ─── Shared HTML shell ──────────────────────────────────────────────────────
+// Brand palette mirrors the live site: black ink, a yellow accent and cream
+// surfaces. Kept deliberately minimal — a wordmark, the message, one link.
+const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+
 const shell = (title, bodyHtml) => `
-  <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-    <div style="padding:20px 0;border-bottom:2px solid #ff5722">
-      <span style="font-size:20px;font-weight:800;letter-spacing:-.5px">MyHoliday<span style="color:#ff5722">Bro</span></span>
+  <div style="background:#faf7ee;padding:32px 16px;font-family:${FONT}">
+    <div style="max-width:480px;margin:0 auto;background:#fff;border:1px solid #ebe7d8;border-top:3px solid #ffde5f;border-radius:14px">
+      <div style="padding:28px 32px">
+        <span style="font-size:17px;font-weight:800;letter-spacing:-.02em;color:#111">MyHolidayBro</span>
+        <h1 style="font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1.25;color:#111;margin:20px 0 14px">${title}</h1>
+        <div style="font-size:15px;line-height:1.6;color:#5a5a5a">${bodyHtml}</div>
+      </div>
     </div>
-    <h1 style="font-size:22px;margin:24px 0 12px">${title}</h1>
-    <div style="font-size:15px;line-height:1.6;color:#333">${bodyHtml}</div>
-    <p style="margin-top:28px;font-size:13px;color:#888">Bro, lose yourself. Discover yourself.<br/>
-      <a href="${env.siteUrl}" style="color:#ff5722">myholidaybro.com</a> · ${env.mail.adminNotify}
+    <p style="max-width:480px;margin:16px auto 0;text-align:center;font-size:12px;color:#5a5a5a">
+      <a href="${env.siteUrl}" style="color:#111;font-weight:600;text-decoration:none">myholidaybro.com</a>
     </p>
   </div>`;
 
-const row = (k, v) => `<tr><td style="padding:4px 12px 4px 0;color:#888">${k}</td><td style="padding:4px 0;font-weight:600">${v ?? "—"}</td></tr>`;
+// A pill button in the brand accent (yellow bg, black ink — matches the site).
+const btn = (href, label) =>
+  `<a href="${href}" style="display:inline-block;background:#ffde5f;color:#111;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:700;font-size:14px">${label}</a>`;
+
+const row = (k, v) => `<tr><td style="padding:6px 14px 6px 0;color:#5a5a5a;font-size:14px">${k}</td><td style="padding:6px 0;font-weight:600;color:#111;font-size:14px">${v ?? "—"}</td></tr>`;
 
 // ─── Templates (each returns a sendEmail promise) ───────────────────────────
 export const emails = {
   welcome: (user) =>
     sendEmail({
       to: user.email,
-      subject: "Welcome to MyHolidayBro 🌴",
+      subject: "Welcome to MyHolidayBro",
       html: shell(
-        `Hey ${user.name?.split(" ")[0] || "traveller"}, welcome aboard!`,
-        `<p>Your account is ready. Save trips to your wishlist, request quotes, and track your bookings — all in one place.</p>
-         <p><a href="${env.siteUrl}/destinations" style="display:inline-block;background:#ff5722;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600">Explore destinations</a></p>`
+        `Welcome aboard, ${user.name?.split(" ")[0] || "traveller"}`,
+        `<p style="margin:0 0 20px">Your account is ready. Save trips, request quotes, and track your bookings — all in one place.</p>
+         ${btn(`${env.siteUrl}/destinations`, "Explore destinations")}`
       ),
     }),
 
@@ -150,12 +160,12 @@ export const emails = {
     sendEmail({
       to: enq.email,
       replyTo: env.mail.adminNotify,
-      subject: "We've got your enquiry — packing your reply now ✈️",
+      subject: "We've received your enquiry",
       html: shell(
-        `Thanks${enq.name || enq.firstName ? `, ${enq.name || enq.firstName}` : ""}!`,
-        `<p>Our trip team has received your enquiry and will reach out shortly${
-          enq.destination ? ` about <b>${enq.destination}</b>` : ""
-        }. Most replies go out within 30 minutes during IST working hours.</p>`
+        `Thanks${enq.name || enq.firstName ? `, ${enq.name || enq.firstName}` : ""}`,
+        `<p style="margin:0">We've received your enquiry${
+          enq.destination ? ` about <b style="color:#111">${enq.destination}</b>` : ""
+        } and will reply shortly — usually within 30 minutes during IST working hours.</p>`
       ),
     }),
 
@@ -166,7 +176,7 @@ export const emails = {
       subject: `New ${enq.type} enquiry — ${enq.name || enq.firstName || enq.email}`,
       html: shell(
         `New ${enq.type} enquiry`,
-        `<table style="font-size:14px;border-collapse:collapse">
+        `<table style="border-collapse:collapse;width:100%;margin-top:4px">
           ${row("Name", enq.name || [enq.firstName, enq.lastName].filter(Boolean).join(" "))}
           ${row("Email", enq.email)}
           ${row("Phone", enq.phone)}
@@ -185,9 +195,9 @@ export const emails = {
       subject: `${code} is your MyHolidayBro admin code`,
       html: shell(
         "Your sign-in code",
-        `<p>Use this one-time code to sign in to the MyHolidayBro admin panel. It expires in ${minutes} minutes.</p>
-         <div style="margin:18px 0;font-size:34px;font-weight:800;letter-spacing:10px;color:#ff5722">${code}</div>
-         <p style="font-size:13px;color:#888">If you didn't request this, you can safely ignore this email — someone may have mistyped their address.</p>`
+        `<p style="margin:0 0 18px">Use this one-time code to sign in to the admin panel. It expires in ${minutes} minutes.</p>
+         <div style="background:#faf7ee;border:1px solid #ebe7d8;border-radius:12px;padding:16px;text-align:center;font-size:30px;font-weight:800;letter-spacing:8px;color:#111">${code}</div>
+         <p style="margin:18px 0 0;font-size:13px;color:#5a5a5a">Didn't request this? You can safely ignore this email.</p>`
       ),
     }),
 
@@ -196,9 +206,9 @@ export const emails = {
       to: user.email,
       subject: `Booking received — ${booking.reference}`,
       html: shell(
-        `Your booking is in! 🎉`,
-        `<p>We've logged your request for <b>${booking.title}</b>. A trip captain will confirm availability and the final quote shortly.</p>
-         <table style="font-size:14px;border-collapse:collapse;margin-top:8px">
+        "Your booking is in",
+        `<p style="margin:0 0 16px">We've logged your request for <b style="color:#111">${booking.title}</b>. A trip captain will confirm availability and the final quote shortly.</p>
+         <table style="border-collapse:collapse;width:100%;margin-top:4px">
           ${row("Reference", booking.reference)}
           ${row("Destination", booking.destination)}
           ${row("Travellers", `${booking.adults || 1} adults, ${booking.children || 0} children`)}

@@ -2,11 +2,14 @@
 // its model, public-readability, search/filter fields and id strategy. Both the
 // public and admin routers iterate this list to wire generic CRUD endpoints,
 // so adding a new collection is a one-line change here.
+//
+// Scope: website content (destinations, weekends, blogs, moments, testimonials),
+// the website query inbox (trip-queries) and the itinerary/PDF builder. The old
+// CRM/booking collections (hotels, transport, sightseeing places, content
+// blocks, trip templates, team, custom packages, quote templates) were removed.
 
 import {
-  Destination, Weekend,
-  Testimonial, Moment, Itinerary, Place, Hotel, Transport, Block, Blog, TripTemplate,
-  TripQuery, TeamMember, CustomPackage, QuoteTemplate,
+  Destination, Weekend, Testimonial, Moment, Itinerary, Blog, TripQuery,
 } from "../models/index.js";
 import { ensurePackageSlugs } from "../utils/packageSlugs.js";
 import { normalizeBlog } from "../utils/blog.js";
@@ -59,31 +62,6 @@ export const RESOURCES = [
     searchFields: ["name", "dest"], filterFields: [],
   },
   {
-    path: "places", model: Place, label: "Place", seedKey: "places",
-    public: false, idPrefix: "pl",
-    searchFields: ["name", "description", "city"], filterFields: ["city", "category"],
-  },
-  {
-    path: "hotels", model: Hotel, label: "Hotel", seedKey: "hotels",
-    public: false, idPrefix: "ht",
-    searchFields: ["name", "location", "city"], filterFields: ["city", "category"],
-  },
-  {
-    path: "transports", model: Transport, label: "Transport", seedKey: "transports",
-    public: false, idPrefix: "tr",
-    searchFields: ["name", "city", "vehicle"], filterFields: ["city"],
-  },
-  {
-    path: "blocks", model: Block, label: "Content block", seedKey: "blocks",
-    public: false, idPrefix: "bk",
-    searchFields: ["title"], filterFields: ["kind"],
-  },
-  {
-    path: "trip-templates", model: TripTemplate, label: "Trip template", seedKey: "tripTemplates",
-    public: false, idPrefix: "tpl",
-    searchFields: ["name", "destination"], filterFields: [],
-  },
-  {
     path: "itineraries", model: Itinerary, label: "Itinerary", seedKey: "itineraries",
     public: false, idPrefix: "it",
     searchFields: ["title", "clientName", "destination", "tripId"], filterFields: ["status", "destination"],
@@ -91,26 +69,8 @@ export const RESOURCES = [
   {
     path: "trip-queries", model: TripQuery, label: "Trip query", seedKey: "tripQueries",
     public: false, idPrefix: "tq",
-    searchFields: ["destination", "guest.name", "guest.phone", "guest.email", "assignedTo"],
-    filterFields: ["status", "assignedTo"],
-  },
-  {
-    path: "team-members", model: TeamMember, label: "Team member", seedKey: "teamMembers",
-    public: false, idPrefix: "tm",
-    searchFields: ["name", "email", "phone"], filterFields: ["active", "role"],
-    defaultSort: "name",
-  },
-  {
-    path: "custom-packages", model: CustomPackage, label: "Custom package", seedKey: "customPackages",
-    public: false, idPrefix: "cp",
-    searchFields: ["title", "destination", "traveller.name", "traveller.phone"],
-    filterFields: ["status"],
-  },
-  {
-    path: "quote-templates", model: QuoteTemplate, label: "Quote template", seedKey: "quoteTemplates",
-    public: false, idPrefix: "qtpl",
-    searchFields: ["name", "destination"], filterFields: ["destination"],
-    defaultSort: "name",
+    searchFields: ["destination", "guest.name", "guest.phone", "guest.email"],
+    filterFields: ["status", "formType"],
   },
 ];
 
